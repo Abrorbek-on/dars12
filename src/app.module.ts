@@ -8,7 +8,7 @@ import { MailerModule } from './common/maile/maile.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
@@ -22,13 +22,19 @@ import { MailerModule } from './common/maile/maile.module';
         database: configService.get('DB_DATABASE'),
         models: [],
         autoLoadModels: true,
-        synchronize: true
-      })
+        synchronize: true,
+
+        dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false,
+          },
+        },
+      }),
     }),
     AuthModule,
     UsersModule,
-    MailerModule
-    
+    MailerModule,
   ],
 })
 export class AppModule {}
